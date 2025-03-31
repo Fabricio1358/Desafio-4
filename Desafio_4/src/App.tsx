@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 import './App.css';
 
+interface Task {
+  name: string;
+  completed: boolean;
+}
+
 function App() {
   const [activeTab, setActiveTab] = useState('Home');
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState('');
+  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editingTask, setEditingTask] = useState('');
 
   // Adiciona uma nova tarefa
   const addTask = () => {
     if (newTask.trim()) {
-      setTasks([...tasks, newTask]);
+      setTasks([...tasks, { name: newTask, completed: false }]);
       setNewTask('');
     }
   };
@@ -20,9 +27,20 @@ function App() {
   };
 
   // Edita uma tarefa
-  const editTask = (index: number, updatedTask: string) => {
+  const saveTask = () => {
+    if (editingIndex !== null && editingTask.trim()) {
+      const updatedTasks = [...tasks];
+      updatedTasks[editingIndex].name = editingTask;
+      setTasks(updatedTasks);
+      setEditingIndex(null);
+      setEditingTask('');
+    }
+  };
+
+  // Alterna o status de uma tarefa
+  const toggleTaskStatus = (index: number) => {
     const updatedTasks = [...tasks];
-    updatedTasks[index] = updatedTask;
+    updatedTasks[index].completed = !updatedTasks[index].completed;
     setTasks(updatedTasks);
   };
 
@@ -49,16 +67,6 @@ function App() {
         {activeTab === 'Home' && (
           <div>
             <h1>Organização</h1>
-            <ul>
-              {tasks.map((task, index) => (
-                <li key={index}>{task}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-        {activeTab === 'About' && (
-          <div>
-            <h1>Tarefas</h1>
             <div>
               <input
                 type="text"
@@ -68,18 +76,80 @@ function App() {
               />
               <button onClick={addTask}>Adicionar</button>
             </div>
-            <ul>
-              {tasks.map((task, index) => (
-                <li key={index}>
-                  <input
-                    type="text"
-                    value={task}
-                    onChange={(e) => editTask(index, e.target.value)}
-                  />
-                  <button onClick={() => deleteTask(index)}>Excluir</button>
-                </li>
-              ))}
-            </ul>
+            <table>
+              <thead>
+                <tr>
+                  <th>Tarefa</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tasks.map((task, index) => (
+                  <tr key={index}>
+                    <td>{task.name}</td>
+                    <td>{task.completed ? 'Concluída' : 'Pendente'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        {activeTab === 'About' && (
+          <div>
+            <h1>Tarefas</h1>
+            <table>
+              <thead>
+                <tr>
+                  <th>Tarefa</th>
+                  <th>Status</th>
+                  <th className='theadOpicoes'>Opções</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tasks.map((task, index) => (
+                  <tr key={index}>
+                    <td>
+                      {editingIndex === index ? (
+                        <input
+                          type="text"
+                          value={editingTask}
+                          onChange={(e) => setEditingTask(e.target.value)}
+                        />
+                      ) : (
+                        task.name
+                      )}
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={task.completed}
+                        onChange={() => toggleTaskStatus(index)}
+                      />
+                    </td>
+                    <td>
+                      {editingIndex === index ? (
+                        <>
+                          <button onClick={saveTask}>Salvar</button>
+                          <button onClick={() => setEditingIndex(null)}>Cancelar</button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => {
+                              setEditingIndex(index);
+                              setEditingTask(task.name);
+                            }}
+                          >
+                            Editar
+                          </button>
+                          <button onClick={() => deleteTask(index)}>Excluir</button>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
