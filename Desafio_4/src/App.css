@@ -1,5 +1,7 @@
 /* Reset básico */
-body, html, #root {
+body,
+html,
+#root {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -26,7 +28,7 @@ body, html, #root {
 /* Barra superior */
 .top-bar {
   width: 100%;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   display: flex;
   padding: 10px;
@@ -46,7 +48,7 @@ body, html, #root {
 .top-bar div.active {
   font-weight: bold;
   background-color: white;
-  color: #007BFF;
+  color: #007bff;
 }
 
 /* Área de conteúdo */
@@ -69,7 +71,8 @@ table {
   border-collapse: collapse;
 }
 
-table th, table td {
+table th,
+table td {
   border: 1px solid #333333;
   padding: 10px;
   text-align: left;
@@ -87,7 +90,7 @@ table th {
 
 button {
   padding: 5px 10px;
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;

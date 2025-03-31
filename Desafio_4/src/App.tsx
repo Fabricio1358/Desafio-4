@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
 interface Task {
   name: string;
@@ -7,17 +7,17 @@ interface Task {
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState('Home');
+  const [activeTab, setActiveTab] = useState("Home");
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [newTask, setNewTask] = useState('');
+  const [newTask, setNewTask] = useState("");
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [editingTask, setEditingTask] = useState('');
+  const [editingTask, setEditingTask] = useState("");
 
   // Adiciona uma nova tarefa
   const addTask = () => {
     if (newTask.trim()) {
       setTasks([...tasks, { name: newTask, completed: false }]);
-      setNewTask('');
+      setNewTask("");
     }
   };
 
@@ -33,7 +33,7 @@ function App() {
       updatedTasks[editingIndex].name = editingTask;
       setTasks(updatedTasks);
       setEditingIndex(null);
-      setEditingTask('');
+      setEditingTask("");
     }
   };
 
@@ -49,14 +49,14 @@ function App() {
       {/* Top bar */}
       <div className="top-bar">
         <div
-          className={activeTab === 'Home' ? 'active' : ''}
-          onClick={() => setActiveTab('Home')}
+          className={activeTab === "Home" ? "active" : ""}
+          onClick={() => setActiveTab("Home")}
         >
           Organização
         </div>
         <div
-          className={activeTab === 'About' ? 'active' : ''}
-          onClick={() => setActiveTab('About')}
+          className={activeTab === "About" ? "active" : ""}
+          onClick={() => setActiveTab("About")}
         >
           Tarefas
         </div>
@@ -64,7 +64,7 @@ function App() {
 
       {/* Content area */}
       <div className="content">
-        {activeTab === 'Home' && (
+        {activeTab === "Home" && (
           <div>
             <h1>Organização</h1>
             <div>
@@ -87,14 +87,14 @@ function App() {
                 {tasks.map((task, index) => (
                   <tr key={index}>
                     <td>{task.name}</td>
-                    <td>{task.completed ? 'Concluída' : 'Pendente'}</td>
+                    <td>{task.completed ? "Concluída" : "Pendente"}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         )}
-        {activeTab === 'About' && (
+        {activeTab === "About" && (
           <div>
             <h1>Tarefas</h1>
             <table>
@@ -102,7 +102,7 @@ function App() {
                 <tr>
                   <th>Tarefa</th>
                   <th>Status</th>
-                  <th className='theadOpicoes'>Opções</th>
+                  <th className="theadOpicoes">Opções</th>
                 </tr>
               </thead>
               <tbody>
@@ -130,7 +130,9 @@ function App() {
                       {editingIndex === index ? (
                         <>
                           <button onClick={saveTask}>Salvar</button>
-                          <button onClick={() => setEditingIndex(null)}>Cancelar</button>
+                          <button onClick={() => setEditingIndex(null)}>
+                            Cancelar
+                          </button>
                         </>
                       ) : (
                         <>
@@ -142,7 +144,9 @@ function App() {
                           >
                             Editar
                           </button>
-                          <button onClick={() => deleteTask(index)}>Excluir</button>
+                          <button onClick={() => deleteTask(index)}>
+                            Excluir
+                          </button>
                         </>
                       )}
                     </td>
